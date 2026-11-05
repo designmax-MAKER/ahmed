@@ -51,3 +51,41 @@ claude
 | `Ctrl+C` أو `/exit` | يقفل البرنامج |
 
 **لو ظهرلك `command not found`:** اقفل الترمنال وافتحه تاني. ولو لسه مش شغال، اكتب `claude doctor` عشان يكشف المشكلة.
+
+## تثبيت أدوات المونتاج
+
+السكريبتات دي بتثبّت:
+
+| الأداة | وظيفتها |
+|---|---|
+| **FFmpeg** | مونتاج من الترمنال: قص، دمج، تحويل صيغ، ترجمة (Claude Code يقدر يستخدمه مباشرة) |
+| **Kdenlive** | برنامج مونتاج كامل ومجاني |
+| **Shotcut** | برنامج مونتاج خفيف ومجاني |
+| **Audacity** | تعديل الصوت |
+
+**على Mac أو Linux:**
+```bash
+./scripts/install-montage-tools.sh
+```
+
+**على Windows (من PowerShell):**
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install-montage-tools.ps1
+```
+
+### أمثلة FFmpeg سريعة
+```bash
+# قص من الثانية 10 لحد الثانية 40
+ffmpeg -i input.mp4 -ss 00:00:10 -to 00:00:40 -c copy cut.mp4
+
+# دمج كذا فيديو (اكتب أسماءهم في list.txt بالشكل: file 'a.mp4')
+ffmpeg -f concat -safe 0 -i list.txt -c copy merged.mp4
+
+# تحويل لـ 1080p وتصغير الحجم
+ffmpeg -i input.mp4 -vf scale=-2:1080 -c:v libx264 -crf 23 -c:a aac output.mp4
+
+# استخراج الصوت
+ffmpeg -i input.mp4 -vn -c:a libmp3lame -q:a 2 audio.mp3
+```
+
+> **ملحوظة:** DaVinci Resolve برنامج مونتاج احترافي مجاني برضه، بس لازم يتنزل يدوي من موقع Blackmagic Design.
