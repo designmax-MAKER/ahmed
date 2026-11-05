@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>SALYSS Commerce Promo</title>
+<style>
+@font-face{font-family:Cairo;font-weight:400;src:url(node_modules/@fontsource/cairo/files/cairo-arabic-400-normal.woff2)}
+@font-face{font-family:Cairo;font-weight:600;src:url(node_modules/@fontsource/cairo/files/cairo-arabic-600-normal.woff2)}
+@font-face{font-family:Cairo;font-weight:700;src:url(node_modules/@fontsource/cairo/files/cairo-arabic-700-normal.woff2)}
+@font-face{font-family:Cairo;font-weight:800;src:url(node_modules/@fontsource/cairo/files/cairo-arabic-800-normal.woff2)}
+@font-face{font-family:Cairo;font-weight:900;src:url(node_modules/@fontsource/cairo/files/cairo-arabic-900-normal.woff2)}
+@font-face{font-family:CairoL;font-weight:400;src:url(node_modules/@fontsource/cairo/files/cairo-latin-400-normal.woff2)}
+@font-face{font-family:CairoL;font-weight:600;src:url(node_modules/@fontsource/cairo/files/cairo-latin-600-normal.woff2)}
+@font-face{font-family:CairoL;font-weight:700;src:url(node_modules/@fontsource/cairo/files/cairo-latin-700-normal.woff2)}
+@font-face{font-family:CairoL;font-weight:800;src:url(node_modules/@fontsource/cairo/files/cairo-latin-800-normal.woff2)}
+@font-face{font-family:CairoL;font-weight:900;src:url(node_modules/@fontsource/cairo/files/cairo-latin-900-normal.woff2)}
+:root{
+  --bg:#141517; --bg2:#1b1c20; --card:#202227; --card2:#26282e; --line:#30323a;
+  --red:#a23a34; --red2:#d9544a; --gold:#e2c896; --gold2:#ab6e30;
+  --txt:#f4f1ec; --mut:#9b9da5; --green:#3fb37f; --green2:#2a7d5a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg)}
+body{font-family:CairoL,Cairo,sans-serif;color:var(--txt);direction:rtl}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg)}
+.abs{position:absolute}
+.blob{position:absolute;border-radius:50%;pointer-events:none}
+#grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 20%,transparent 70%)}
+.scene{position:absolute;inset:0;opacity:0;will-change:transform,opacity}
+.cap{position:absolute;top:235px;left:60px;right:60px;text-align:center;font-weight:800;font-size:70px;line-height:1.38;opacity:0}
+.cap .w{display:inline-block;will-change:transform,opacity}
+.hl{color:var(--red2)}
+.gl{background:linear-gradient(180deg,#f3dfb3,#c9a76a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+
+/* cards */
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.02) inset}
+.chip{display:inline-flex;align-items:center;gap:10px;padding:6px 20px;border-radius:999px;font-weight:700;font-size:26px;white-space:nowrap}
+.dot{width:14px;height:14px;border-radius:50%;display:inline-block;flex:none}
+
+/* phone */
+.phone{position:absolute;width:560px;height:1100px;border-radius:78px;background:#0b0b0d;padding:16px;box-shadow:0 60px 120px rgba(0,0,0,.6),0 0 0 3px #34353b}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:64px;overflow:hidden;background:linear-gradient(180deg,#1f2025,#17181b)}
+.phone .notch{position:absolute;top:22px;left:50%;transform:translateX(-50%);width:170px;height:46px;border-radius:30px;background:#000;z-index:5}
+
+/* hook */
+#hookbg{position:absolute;inset:-80px;filter:blur(22px) brightness(.55)}
+.hookcard{position:absolute;border-radius:40px;background:linear-gradient(160deg,#3a2a28,#1f2024);border:2px solid #3a3b42}
+#hooktxt{position:absolute;top:700px;left:0;right:0;text-align:center;font-weight:900;font-size:132px;line-height:1.3}
+
+/* notifications */
+.noti{position:absolute;right:26px;left:26px;height:136px;border-radius:30px;background:rgba(48,50,57,.92);border:1.5px solid #3c3e46;padding:20px 26px;display:flex;gap:20px;align-items:center}
+.noti .av{width:78px;height:78px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:34px;color:#111}
+.noti .bd{flex:1;min-width:0}
+.noti .nm{font-weight:800;font-size:28px;display:flex;justify-content:space-between;align-items:center}
+.noti .nm small{font-weight:600;font-size:21px;color:var(--mut)}
+.noti .ms{font-weight:600;font-size:25px;color:#d6d4cf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.noti .src{font-size:20px;font-weight:700;padding:2px 14px;border-radius:999px;margin-inline-start:10px}
+
+/* sheets */
+.sheet{position:absolute;width:780px;border-radius:24px;overflow:hidden;background:#f3f3f1;color:#222;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.sheet .tb{background:#1f6e43;color:#fff;font-weight:700;font-size:28px;padding:16px 26px;display:flex;justify-content:space-between;align-items:center}
+.sheet table{width:100%;border-collapse:collapse;font-size:25px;font-weight:600}
+.sheet td,.sheet th{border:1.5px solid #cfd2cc;padding:12px 14px;text-align:center;height:66px}
+.sheet th{background:#e3e6df;font-weight:800;color:#3b3f3a}
+.bad{background:#ffd7d3;color:#b0261c}
+.warn{background:#fff1bf;color:#8a6200}
+
+/* list rows */
+.row{display:flex;align-items:center;gap:18px;padding:0 30px;height:112px;border-top:1.5px solid var(--line);font-size:29px;font-weight:700}
+.row .num{color:var(--mut);font-weight:700;width:120px}
+.row .nm{flex:1}
+.row .amt{width:170px;text-align:left;font-weight:800}
+.qb{width:62px;height:62px;border-radius:50%;background:rgba(226,200,150,.15);border:2px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:36px}
+
+/* dashboard */
+.win{position:absolute;width:980px;height:900px;border-radius:30px;overflow:hidden;background:#17181c;border:1.5px solid #34363e;box-shadow:0 60px 130px rgba(0,0,0,.65)}
+.win .top{height:62px;background:#202126;display:flex;align-items:center;padding:0 24px;gap:12px;border-bottom:1.5px solid #2e3037;direction:ltr}
+.win .top i{width:16px;height:16px;border-radius:50%;display:inline-block}
+.win .url{margin:0 auto;background:#15161a;border:1.5px solid #30323a;border-radius:999px;padding:4px 28px;font-size:21px;font-weight:700;color:#bfc1c7;display:flex;gap:10px;align-items:center}
+.win .body{display:flex;height:calc(100% - 62px)}
+.side{width:230px;background:#1c1d22;border-left:1.5px solid #2c2e35;padding:26px 18px;display:flex;flex-direction:column;gap:10px}
+.side .brand{display:flex;align-items:center;gap:12px;margin-bottom:22px;font-weight:800;font-size:24px;color:var(--gold)}
+.side .it{padding:12px 18px;border-radius:16px;font-size:24px;font-weight:700;color:#a7a9b0;display:flex;gap:12px;align-items:center}
+.side .it.on{background:rgba(162,58,52,.22);color:#fff;box-shadow:inset -4px 0 0 var(--red2)}
+.side .it b{width:12px;height:12px;border-radius:4px;background:currentColor;opacity:.6;display:inline-block}
+.main{flex:1;padding:28px 30px;overflow:hidden}
+.main h3{font-size:36px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
+.main h3 small{font-size:21px;color:var(--mut);font-weight:600}
+.stats{display:flex;gap:18px;margin:22px 0 22px}
+.stat{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:16px 20px}
+.stat .l{font-size:21px;color:var(--mut);font-weight:700}
+.stat .v{font-size:46px;font-weight:900;line-height:1.2}
+.tbl{background:var(--card);border:1.5px solid var(--line);border-radius:22px;overflow:hidden}
+.tr{display:flex;align-items:center;height:84px;padding:0 20px;gap:10px;font-size:23px;font-weight:700;border-top:1.5px solid var(--line);position:relative;white-space:nowrap}
+.tr.h{height:58px;border-top:none;color:var(--mut);font-size:20px;background:#1d1f24}
+.tr .c1{width:82px;color:var(--mut)}
+.tr .c2{flex:1}
+.tr .c3{width:128px}
+.tr .c4{width:64px;text-align:left}
+.tr .c5{width:120px;display:flex;justify-content:flex-end}
+.st{font-size:19px;font-weight:800;padding:4px 14px;border-radius:999px}
+.st.new{background:rgba(217,84,74,.18);color:#ff8b7f}
+.st.ship{background:rgba(226,200,150,.15);color:var(--gold)}
+.st.del{background:rgba(110,150,255,.15);color:#9fb6ff}
+.st.paid{background:rgba(63,179,127,.18);color:#6fe0ad}
+.srcx{font-size:19px;font-weight:700;color:#c9cbd1;display:flex;align-items:center;gap:8px}
+
+/* timeline */
+.tl{position:relative;padding:10px 0}
+.step{display:flex;align-items:center;gap:30px;height:150px;position:relative}
+.step .ci{width:84px;height:84px;border-radius:50%;border:3px solid #3a3c44;background:#1c1d22;display:flex;align-items:center;justify-content:center;flex:none;position:relative;z-index:2}
+.step .tx{flex:1}
+.step .tx b{display:block;font-size:36px;font-weight:800}
+.step .tx span{font-size:24px;color:var(--mut);font-weight:600}
+.step .tm{font-size:26px;font-weight:700;color:var(--mut)}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:14px;height:110px;border-radius:30px;font-size:36px;font-weight:800}
+.cursor{position:absolute;width:64px;height:64px;z-index:50;pointer-events:none}
+.ripple{position:absolute;border-radius:50%;border:4px solid rgba(255,255,255,.8);z-index:49;pointer-events:none}
+.flow{display:flex;align-items:center;justify-content:center;gap:12px}
+.fchip{padding:14px 26px;border-radius:22px;font-size:32px;font-weight:800;background:var(--card);border:2px solid var(--line);color:#bfc1c7}
+.arr{font-size:34px;color:#555862;font-weight:900}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(255,236,200,.9),rgba(217,84,74,.25) 45%,transparent 70%);opacity:0;pointer-events:none;z-index:80}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bgwrap" class="abs" style="inset:0">
+    <div class="blob" id="b1" style="width:1400px;height:1400px;background:radial-gradient(circle,rgba(162,58,52,.38),transparent 62%)"></div>
+    <div class="blob" id="b2" style="width:1200px;height:1200px;background:radial-gradient(circle,rgba(226,200,150,.13),transparent 62%)"></div>
+    <div id="grid"></div>
+  </div>
+
+  <!-- S1 HOOK -->
+  <div class="scene" id="s1">
+    <div id="hookbg">
+      <div class="hookcard" style="left:120px;top:380px;width:520px;height:640px"></div>
+      <div class="hookcard" style="left:680px;top:300px;width:420px;height:520px;background:linear-gradient(160deg,#4a2c26,#26272c)"></div>
+      <div class="hookcard" style="left:80px;top:1080px;width:420px;height:520px;background:linear-gradient(160deg,#2c2f36,#1f2024)"></div>
+      <div class="hookcard" style="left:540px;top:900px;width:520px;height:700px;background:linear-gradient(160deg,#3d3329,#1f2024)"></div>
+    </div>
+    <div class="abs" style="inset:0;background:radial-gradient(ellipse at 50% 48%,rgba(20,21,23,.2),rgba(20,21,23,.85) 75%)"></div>
+    <div id="hooktxt"><div><span class="w">لو</span> <span class="w">عندك</span></div><div><span class="w hl">متجر</span> <span class="w hl">أونلاين</span></div></div>
+  </div>
+
+  <!-- S2 messages -->
+  <div class="scene" id="s2">
+    <div class="phone" id="ph2" style="left:260px;top:520px">
+      <div class="scr">
+        <div class="notch"></div>
+        <div style="text-align:center;padding-top:110px">
+          <div style="font-size:104px;font-weight:800;line-height:1" class="ltr" id="clock2">10:42</div>
+          <div style="font-size:26px;color:var(--mut);font-weight:700;margin-top:10px">الخميس ٥ نوفمبر</div>
+        </div>
+        <div id="notis"></div>
+      </div>
+    </div>
+    <div class="abs" id="badge2" style="left:760px;top:500px;width:96px;height:96px;border-radius:50%;background:var(--red2);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:900;box-shadow:0 10px 30px rgba(217,84,74,.5)"><span class="ltr" id="badgen">0</span></div>
+  </div>
+
+  <!-- S3 sheets -->
+  <div class="scene" id="s3">
+    <div class="sheet" id="sh1" style="left:150px;top:560px">
+      <div class="tb"><span>شيت الشحن</span><span class="ltr" style="opacity:.8;font-size:22px">shipping.xlsx</span></div>
+      <table>
+        <tr><th>الطلب</th><th>العميل</th><th>الشحن</th><th>الحالة</th></tr>
+        <tr><td class="ltr">1041</td><td>منة</td><td>مندوب 2</td><td>اتسلم</td></tr>
+        <tr><td class="ltr">1042</td><td>كريم</td><td>مندوب 1</td><td class="bad">؟؟</td></tr>
+        <tr><td class="ltr">1043</td><td>هالة</td><td class="warn">—</td><td>في الطريق</td></tr>
+        <tr><td class="ltr">1044</td><td>عمر</td><td>مندوب 2</td><td class="bad">مرتجع؟</td></tr>
+        <tr><td class="ltr">1045</td><td>سارة</td><td class="warn">—</td><td>—</td></tr>
+      </table>
+    </div>
+    <div class="sheet" id="sh2" style="left:150px;top:980px">
+      <div class="tb" style="background:#2b5f9e"><span>شيت التحصيل</span><span class="ltr" style="opacity:.8;font-size:22px">collection_final_2.xlsx</span></div>
+      <table>
+        <tr><th>الطلب</th><th>المبلغ</th><th>اتحصّل؟</th><th>ملاحظات</th></tr>
+        <tr><td class="ltr">1041</td><td>450</td><td>أيوه</td><td></td></tr>
+        <tr><td class="ltr">1042</td><td>320</td><td class="bad">مش عارف</td><td>اسأل المندوب</td></tr>
+        <tr><td class="ltr">1044</td><td class="bad">610</td><td class="warn">؟</td><td></td></tr>
+        <tr><td class="ltr">1047</td><td>275</td><td>أيوه</td><td class="bad">مش في الشحن</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- S4 who paid -->
+  <div class="scene" id="s4">
+    <div class="card abs" id="c4" style="left:90px;top:560px;width:900px;overflow:hidden">
+      <div style="padding:30px 34px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:36px;font-weight:800">طلبات الدفع عند الاستلام</div>
+        <div class="chip" style="background:rgba(226,200,150,.12);color:var(--gold)">النهارده</div>
+      </div>
+      <div id="rows4"></div>
+    </div>
+  </div>
+
+  <!-- S5 month close -->
+  <div class="scene" id="s5">
+    <div class="card abs" id="c5" style="left:110px;top:600px;width:860px;padding:44px 48px">
+      <div style="font-size:34px;font-weight:800;color:var(--mut);margin-bottom:26px">تقفيل الشهر</div>
+      <div style="display:flex;justify-content:space-between;font-size:34px;font-weight:700;padding:18px 0"><span>المفروض يتحصّل</span><span class="ltr" id="v5a">48,750 EGP</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:34px;font-weight:700;padding:18px 0"><span>اتحصّل فعلًا</span><span class="ltr" id="v5b">0 EGP</span></div>
+      <div style="height:2px;background:var(--line);margin:22px 0"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px"><span style="font-size:36px;font-weight:800">فرق مش مفهوم</span><span class="ltr" id="v5c" style="font-size:66px;font-weight:900;color:var(--red2)">-7,550 EGP</span></div>
+    </div>
+    <div class="chip abs" id="q5a" style="left:120px;top:1260px;background:#2a2c33;color:#d6d4cf;font-size:30px;padding:12px 26px">مرتجعات؟</div>
+    <div class="chip abs" id="q5b" style="left:640px;top:1300px;background:#2a2c33;color:#d6d4cf;font-size:30px;padding:12px 26px">مصاريف شحن؟</div>
+    <div class="chip abs" id="q5c" style="left:380px;top:1420px;background:#2a2c33;color:#d6d4cf;font-size:30px;padding:12px 26px">فلوس مع المندوب؟</div>
+  </div>
+
+  <!-- S6 brand reveal -->
+  <div class="scene" id="s6">
+    <div class="abs" id="ring6" style="left:540px;top:900px;width:10px;height:10px;border-radius:50%;border:4px solid rgba(226,200,150,.7);transform:translate(-50%,-50%)"></div>
+    <img src="mark.png" class="abs" id="mark6" style="left:540px;top:900px;width:300px;transform:translate(-50%,-50%)">
+    <div class="abs" id="name6" style="left:0;right:0;top:1120px;text-align:center"><div class="ltr" style="font-size:96px;font-weight:900;letter-spacing:2px"><span class="gl">SALYSS</span> <span style="color:#fff">Commerce</span></div></div>
+  </div>
+
+  <!-- dashboard window (S6-S7) -->
+  <div class="scene" id="sdash"><div id="dashhost"></div></div>
+
+  <!-- S8 shipping timeline -->
+  <div class="scene" id="s8">
+    <div class="card abs" id="c8" style="left:90px;top:540px;width:900px;padding:36px 44px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:24px;color:var(--mut);font-weight:700">طلب <span class="ltr">#1048</span></div><div style="font-size:42px;font-weight:800">منة محمد</div></div>
+        <div class="chip" style="background:rgba(226,200,150,.12);color:var(--gold);font-size:26px">دفع عند الاستلام · <span class="ltr">450 EGP</span></div>
+      </div>
+      <div style="height:2px;background:var(--line);margin:26px 0 10px"></div>
+      <div class="tl" id="tl8">
+        <div class="abs" style="right:41px;top:85px;width:4px;height:450px;background:#33353c;border-radius:4px"></div>
+        <div class="abs" id="tlfill" style="right:41px;top:85px;width:4px;height:0;background:linear-gradient(180deg,var(--green),#6fe0ad);border-radius:4px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S9 collect on phone -->
+  <div class="scene" id="s9">
+    <div class="phone" id="ph9" style="left:260px;top:520px">
+      <div class="scr">
+        <div class="notch"></div>
+        <div style="padding:110px 34px 0">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px">
+            <div style="font-size:30px;font-weight:800">تسليم الطلب</div>
+            <img src="mark.png" style="height:46px">
+          </div>
+          <div class="card" style="padding:30px;border-radius:30px;background:#25272d">
+            <div style="font-size:23px;color:var(--mut);font-weight:700">طلب <span class="ltr">#1048</span></div>
+            <div style="font-size:38px;font-weight:800">منة محمد</div>
+            <div style="font-size:24px;color:var(--mut);font-weight:600;margin-bottom:22px">المعادي، القاهرة</div>
+            <div style="height:2px;background:var(--line);margin-bottom:22px"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:26px;font-weight:700;color:var(--mut)">الدفع عند الاستلام</span><span class="ltr" style="font-size:44px;font-weight:900">450 EGP</span></div>
+          </div>
+          <div id="btn9wrap" style="position:relative;margin-top:40px">
+            <div class="btn" id="btn9a" style="background:var(--red);color:#fff;position:absolute;left:0;right:0;top:0">تأكيد التحصيل</div>
+            <div class="btn" id="btn9b" style="background:var(--green2);color:#fff;position:absolute;left:0;right:0;top:0;opacity:0">
+              <svg width="44" height="44" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>تم التحصيل</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="abs card" id="toast9" style="left:150px;top:1500px;width:780px;padding:24px 30px;display:flex;align-items:center;gap:20px;border-radius:28px;opacity:0">
+      <div style="width:70px;height:70px;border-radius:50%;background:rgba(63,179,127,.2);display:flex;align-items:center;justify-content:center;flex:none"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#6fe0ad" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="font-size:30px;font-weight:800">اتحصّل <span class="ltr">450 EGP</span> من طلب <span class="ltr">#1048</span></div>
+    </div>
+  </div>
+
+  <!-- S10 accounting -->
+  <div class="scene" id="s10">
+    <div class="chip abs" id="link10" style="left:300px;top:530px;background:rgba(226,200,150,.14);color:var(--gold);font-size:28px;padding:10px 26px;border:1.5px solid rgba(226,200,150,.35)">مربوط بطلب <span class="ltr">#1048</span></div>
+    <div class="card abs" id="c10" style="left:90px;top:640px;width:900px;overflow:hidden">
+      <div style="padding:30px 36px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:36px;font-weight:800">الحسابات</div>
+        <div class="chip" style="background:rgba(63,179,127,.15);color:#6fe0ad">قيد تلقائي</div>
+      </div>
+      <div class="tr h" style="font-size:24px;height:64px;padding:0 36px"><span style="flex:1">الحساب</span><span style="width:170px;text-align:left">مدين</span><span style="width:170px;text-align:left">دائن</span></div>
+      <div class="tr" id="e1" style="font-size:30px;height:100px;padding:0 36px"><span style="flex:1">الخزينة</span><span class="ltr" style="width:170px;text-align:left">450</span><span style="width:170px;text-align:left;color:var(--mut)">—</span></div>
+      <div class="tr" id="e2" style="font-size:30px;height:100px;padding:0 36px"><span style="flex:1">العملاء — منة محمد</span><span style="width:170px;text-align:left;color:var(--mut)">—</span><span class="ltr" style="width:170px;text-align:left">450</span></div>
+    </div>
+    <div class="card abs" id="c10b" style="left:90px;top:1100px;width:900px;padding:34px 36px">
+      <div style="display:flex;justify-content:space-between;font-size:31px;font-weight:700;padding:8px 0"><span style="color:var(--mut)">المفروض يتحصّل</span><span class="ltr">48,750 EGP</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:31px;font-weight:700;padding:8px 0"><span style="color:var(--mut)">اتحصّل</span><span class="ltr" id="v10">48,300 EGP</span></div>
+      <div style="height:2px;background:var(--line);margin:16px 0"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:34px;font-weight:800">الفرق</span>
+        <span id="v10c" style="display:flex;align-items:center;gap:14px;font-size:54px;font-weight:900;color:var(--red2)"><span class="ltr" id="v10n">-450 EGP</span></span></div>
+    </div>
+    <div class="chip abs" id="ok10" style="left:340px;top:1470px;background:rgba(63,179,127,.18);color:#6fe0ad;font-size:32px;padding:12px 30px;opacity:0"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#6fe0ad" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>الحسابات متطابقة</div>
+  </div>
+
+  <!-- S11 all in one -->
+  <div class="scene" id="s11">
+    <div id="dash11host"></div>
+    <div class="phone" id="ph11" style="left:640px;top:820px;width:330px;height:650px;border-radius:52px;padding:10px">
+      <div class="scr" style="border-radius:44px;padding:70px 18px 0">
+        <div class="notch" style="width:100px;height:28px;top:14px"></div>
+        <div class="card" style="padding:18px;border-radius:22px;background:#25272d">
+          <div style="font-size:16px;color:var(--mut);font-weight:700">طلب <span class="ltr">#1048</span></div>
+          <div style="font-size:24px;font-weight:800">منة محمد</div>
+          <div class="ltr" style="font-size:28px;font-weight:900;margin-top:8px">450 EGP</div>
+        </div>
+        <div class="btn" style="background:var(--green2);height:70px;font-size:22px;border-radius:20px;margin-top:20px"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>تم التحصيل</div>
+      </div>
+    </div>
+    <div class="flow abs" id="flow11" style="left:0;right:0;top:1560px">
+      <div class="fchip">الطلبات</div><div class="arr">←</div>
+      <div class="fchip">الشحن</div><div class="arr">←</div>
+      <div class="fchip">التحصيل</div><div class="arr">←</div>
+      <div class="fchip">الحسابات</div>
+    </div>
+  </div>
+
+  <!-- S12 end card -->
+  <div class="scene" id="s12">
+    <div class="abs" style="inset:0;background:radial-gradient(ellipse at 50% 52%,rgba(162,58,52,.35),transparent 60%),linear-gradient(180deg,#121315,#18191c)"></div>
+    <div class="abs" id="ring12" style="left:540px;top:780px;width:10px;height:10px;border-radius:50%;border:3px solid rgba(226,200,150,.6);transform:translate(-50%,-50%)"></div>
+    <img src="mark.png" class="abs" id="mark12" style="left:540px;top:780px;width:280px;transform:translate(-50%,-50%)">
+    <div class="abs" id="word12" style="left:0;right:0;top:960px;text-align:center">
+      <div style="font-size:150px;font-weight:900;line-height:1.05" class="gl">سلس</div>
+      <div class="ltr" style="font-size:46px;font-weight:700;letter-spacing:22px;color:var(--gold);margin-top:6px;padding-left:22px">S<span style="color:var(--red2)">A</span>LYSS</div>
+    </div>
+    <div class="abs" id="tag12" style="left:60px;right:60px;top:1250px;text-align:center;font-size:44px;font-weight:800;color:#e9e6e0">متجرك الإلكتروني من الطلب حتى التحصيل</div>
+    <div class="abs" id="cta12" style="left:0;right:0;top:1370px;display:flex;justify-content:center;gap:26px">
+      <div class="chip" style="background:var(--red);color:#fff;font-size:38px;padding:20px 48px;box-shadow:0 18px 40px rgba(162,58,52,.45)">استشارة مجانية ←</div>
+      <div class="chip ltr" style="background:rgba(255,255,255,.06);border:2px solid rgba(226,200,150,.45);color:var(--gold);font-size:38px;padding:20px 44px">salyss.com</div>
+    </div>
+  </div>
+
+  <!-- captions -->
+  <div id="caps"></div>
+
+  <svg class="cursor" id="cursor" viewBox="0 0 32 32" style="opacity:0"><path d="M6 3l20 12-8.5 2L13 26z" fill="#fff" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/></svg>
+  <div class="ripple" id="ripple" style="opacity:0"></div>
+  <div id="flash"></div>
+</div>
+
+<script>
+// ---------- helpers ----------
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const P=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+
+// ---------- data ----------
+const CAPS=[
+  // [start,end,html]
+  [3.0,6.0,'والطلبات بتجيلك من <span class="hl">كل حتة</span>'],
+  [6.0,9.0,'والشحن في شيت..<br>والتحصيل في <span class="hl">شيت تاني</span>'],
+  [9.0,12.0,'ومش عارف مين <span class="hl">دفع</span><br>ومين لسه'],
+  [12.0,15.0,'وآخر الشهر الحسابات<br><span class="hl">مش راكبة</span>'],
+  [15.0,18.0,'لكن مع <span class="gl">SALYSS Commerce</span>'],
+  [18.0,22.0,'كل <span class="hl">الطلبات</span> في لوحة واحدة'],
+  [22.0,26.0,'وتتابع <span class="hl">الشحن</span> خطوة بخطوة'],
+  [26.0,30.0,'ولما يتم <span class="hl">التحصيل</span><br>عند الاستلام'],
+  [30.0,34.0,'بيتسجل في <span class="hl">الحسابات</span><br>على طول'],
+  [34.0,37.0,'من <span class="hl">الطلب</span> حتى <span class="hl">التحصيل</span><br>في مكان واحد'],
+  [37.0,42.0,'وخلّي متجرك <span class="gl">سلس</span>'],
+];
+const capEls=[];
+CAPS.forEach(([a,b,h])=>{
+  const d=document.createElement('div');d.className='cap';
+  // split into words, keeping highlight spans
+  const tmp=document.createElement('div');tmp.innerHTML=h;
+  const out=[];
+  tmp.childNodes.forEach(n=>{
+    if(n.nodeType===3){n.textContent.split(/\s+/).filter(Boolean).forEach(w=>out.push(`<span class="w">${w}</span>`));}
+    else if(n.nodeName==='BR'){out.push('<br>');}
+    else{ // highlighted span: keep as one unit (Latin brand) or split Arabic words
+      const cls=n.className, txt=n.textContent;
+      if(/[A-Za-z]/.test(txt)) out.push(`<span class="w ${cls} ltr">${txt}</span>`);
+      else txt.split(/\s+/).filter(Boolean).forEach(w=>out.push(`<span class="w ${cls}">${w}</span>`));
+    }
+  });
+  d.innerHTML=out.join(' ');
+  $('caps').appendChild(d);
+  capEls.push({el:d,a,b,ws:[...d.querySelectorAll('.w')]});
+});
+
+const NOTIS=[
+  ['واتساب','#25d366','م','منة محمد','عايزة الطقم ده مقاس M','الآن'],
+  ['إنستجرام','#e1306c','ك','كريم سامي','السعر كام؟ وبتوصلوا إسكندرية؟','من دقيقة'],
+  ['فيسبوك','#4c7bf3','ه','هالة أحمد','أكدوا الأوردر بتاعي لو سمحتوا','من ٣ دقايق'],
+  ['واتساب','#25d366','ع','عمر خالد','الأوردر لسه موصلش!','من ٥ دقايق'],
+  ['مكالمة فائتة','#d9544a','؟','رقم مش متسجل','(2) مكالمة فائتة','من ٧ دقايق'],
+];
+NOTIS.forEach((n,i)=>{
+  const d=document.createElement('div');d.className='noti';d.id='n'+i;d.style.top=(330+i*148)+'px';
+  d.innerHTML=`<div class="av" style="background:${n[1]}">${n[2]}</div><div class="bd"><div class="nm"><span>${n[3]}<span class="src" style="background:${n[1]}33;color:${n[1]}">${n[0]}</span></span><small>${n[5]}</small></div><div class="ms">${n[4]}</div></div>`;
+  $('notis').appendChild(d);
+});
+
+const ROWS4=[['1041','منة محمد','450'],['1042','كريم سامي','320'],['1043','هالة أحمد','275'],['1044','عمر خالد','610'],['1045','سارة علي','390']];
+ROWS4.forEach((r,i)=>{
+  const d=document.createElement('div');d.className='row';d.id='r4'+i;
+  d.innerHTML=`<span class="num ltr">#${r[0]}</span><span class="nm">${r[1]}</span><span class="amt ltr">${r[2]} EGP</span><div class="qb" id="q4${i}">؟</div>`;
+  $('rows4').appendChild(d);
+});
+
+const STEPS=[['اتأكد الطلب','من واتساب','10:05'],['اتجهّز','في المخزن','12:30'],['خرج مع المندوب','في الطريق للعميل','14:10'],['اتسلّم للعميل','الدفع عند الاستلام','17:45']];
+STEPS.forEach((s,i)=>{
+  const d=document.createElement('div');d.className='step';d.id='st'+i;
+  d.innerHTML=`<div class="ci" id="ci${i}"><svg width="44" height="44" viewBox="0 0 24 24" id="ck${i}" style="opacity:0"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="tx"><b>${s[0]}</b><span>${s[1]}</span></div><div class="tm ltr">${s[2]}</div>`;
+  $('tl8').appendChild(d);
+});
+
+function dashHTML(pre){
+  const rows=[
+    ['1048','منة محمد','واتساب','#25d366','450','new','جديد'],
+    ['1047','سارة علي','الموقع','#e2c896','275','ship','قيد الشحن'],
+    ['1046','كريم سامي','إنستجرام','#e1306c','320','del','اتسلّم'],
+    ['1045','هالة أحمد','فيسبوك','#4c7bf3','390','paid','اتحصّل'],
+    ['1044','عمر خالد','واتساب','#25d366','610','paid','اتحصّل'],
+    ['1043','نور حسن','الموقع','#e2c896','520','ship','قيد الشحن'],
+  ];
+  return `<div class="win" id="${pre}win">
+    <div class="top"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>
+      <div class="url"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0110 0v3M5 11h14v10H5z" fill="none" stroke="#9b9da5" stroke-width="2.4"/></svg>salyss.com</div></div>
+    <div class="body">
+      <div class="side">
+        <div class="brand"><img src="mark.png" style="height:40px"><span class="ltr">Commerce</span></div>
+        <div class="it"><b></b>الرئيسية</div>
+        <div class="it on"><b></b>الطلبات</div>
+        <div class="it"><b></b>الشحن</div>
+        <div class="it"><b></b>التحصيل</div>
+        <div class="it"><b></b>الحسابات</div>
+        <div class="it"><b></b>المنتجات</div>
+      </div>
+      <div class="main">
+        <h3>الطلبات <small>الخميس ٥ نوفمبر</small></h3>
+        <div class="stats">
+          <div class="stat"><div class="l">طلبات النهارده</div><div class="v ltr" id="${pre}sv0">128</div></div>
+          <div class="stat"><div class="l">قيد الشحن</div><div class="v ltr" id="${pre}sv1" style="color:var(--gold)">46</div></div>
+          <div class="stat"><div class="l">اتحصّل</div><div class="v ltr" id="${pre}sv2" style="color:#6fe0ad">72</div></div>
+        </div>
+        <div class="tbl">
+          <div class="tr h"><span class="c1">الطلب</span><span class="c2">العميل</span><span class="c3">المصدر</span><span class="c4">المبلغ</span><span class="c5">الحالة</span></div>
+          ${rows.map((r,i)=>`<div class="tr" id="${pre}tr${i}"><span class="c1 ltr">#${r[0]}</span><span class="c2">${r[1]}</span><span class="c3 srcx"><span class="dot" style="background:${r[3]}"></span>${r[2]}</span><span class="c4 ltr">${r[4]}</span><span class="c5"><span class="st ${r[5]}">${r[6]}</span></span></div>`).join('')}
+        </div>
+      </div>
+    </div></div>`;
+}
+$('dashhost').innerHTML=dashHTML('d');
+$('dash11host').innerHTML=dashHTML('e');
+
+// ---------- scene timing ----------
+const SC={s1:[0,3.0],s2:[3.0,6.0],s3:[6.0,9.0],s4:[9.0,12.0],s5:[12.0,15.0],s6:[15.0,16.9],sdash:[16.5,22.15],s8:[22.0,26.0],s9:[26.0,30.0],s10:[30.0,34.0],s11:[34.0,37.0],s12:[37.0,99]};
+const FI=.4, FO=.3;
+
+function sceneVis(id,t){
+  const [a,b]=SC[id]; const el=$(id);
+  if(t<a-0.001||t>b){el.style.opacity=0;el.style.display='none';return null;}
+  el.style.display='block';
+  const i=eo(P(t,a,a+FI)), o=eio(P(t,b-FO,b));
+  const s=lerp(.94,1,i)*lerp(1,1.04,o), y=lerp(50,0,i);
+  el.style.opacity=(id==='s1'?1:i)*(1-o);
+  el.style.transform=`translateY(${y}px) scale(${s})`;
+  return t-a;
+}
+
+function caps(t){
+  capEls.forEach(c=>{
+    if(t<c.a||t>c.b+0.01){c.el.style.opacity=0;return;}
+    const o=eio(P(t,c.b-FO,c.b));
+    c.el.style.opacity=1-o;
+    c.el.style.transform=`translateY(${-o*30}px)`;
+    c.ws.forEach((w,k)=>{const x=eo(P(t,c.a+0.05+k*0.07,c.a+0.45+k*0.07));w.style.opacity=x;w.style.transform=`translateY(${(1-x)*40}px) scale(${lerp(.9,1,x)})`;});
+  });
+}
+
+function cursor(t,pts){ // pts: [[time,x,y],...], visible between first and last (+fade)
+  const c=$('cursor');
+  if(!pts||t<pts[0][0]-.3||t>pts[pts.length-1][0]+.4){c.style.opacity=0;return;}
+  let x=pts[0][1],y=pts[0][2];
+  for(let i=1;i<pts.length;i++){const[t0,x0,y0]=pts[i-1],[t1,x1,y1]=pts[i];if(t>=t0){const k=eio(P(t,t0,t1));x=lerp(x0,x1,k);y=lerp(y0,y1,k);}}
+  c.style.opacity=Math.min(P(t,pts[0][0]-.3,pts[0][0]),1-P(t,pts[pts.length-1][0],pts[pts.length-1][0]+.4));
+  c.style.left=x+'px';c.style.top=y+'px';
+}
+function ripple(t,t0,x,y){
+  const r=$('ripple');const k=P(t,t0,t0+.5);
+  if(t<t0||k>=1){r.style.opacity=0;return false;}
+  const s=lerp(20,140,eo(k));r.style.width=r.style.height=s+'px';r.style.left=(x-s/2)+'px';r.style.top=(y-s/2)+'px';r.style.opacity=1-k;return true;
+}
+
+// ---------- render ----------
+window.render=function(t){
+  // background drift
+  $('b1').style.transform=`translate(${-300+Math.sin(t*.35)*160}px,${-250+Math.cos(t*.27)*140}px)`;
+  $('b2').style.transform=`translate(${300+Math.cos(t*.3)*160}px,${900+Math.sin(t*.22)*160}px)`;
+  caps(t);
+  let curPts=null, rip=null;
+
+  // S1 hook
+  let lt=sceneVis('s1',t);
+  if(lt!==null){
+    $('hookbg').style.transform=`scale(${1.08-lt*.02})`;
+    const ws=$('hooktxt').querySelectorAll('.w');
+    const times=[.15,.45,1.0,1.25];
+    ws.forEach((w,k)=>{const x=eo(P(lt,times[k],times[k]+.4));w.style.opacity=x;w.style.transform=`translateY(${(1-x)*60}px) scale(${lerp(.85,1,back(x))})`;});
+    $('hooktxt').style.transform=`scale(${1+lt*.02})`;
+  }
+
+  // S2 messages
+  lt=sceneVis('s2',t);
+  if(lt!==null){
+    let cnt=0;
+    NOTIS.forEach((n,i)=>{const s=.35+i*.42;const x=eo(P(lt,s,s+.35));if(lt>=s)cnt+=1+(i===4?1:i%2);
+      const e=$('n'+i);e.style.opacity=x;e.style.transform=`translateY(${(1-x)*-50}px) scale(${lerp(.9,1,x)})`;});
+    $('badgen').textContent=cnt;
+    const bx=back(P(lt,.35,.7));$('badge2').style.transform=`scale(${lt<.35?0:bx*(1+0.12*Math.max(0,Math.sin(lt*14))*(lt<2.6?1:0))})`;
+    $('ph2').style.transform=`translateY(${Math.sin(lt*1.6)*8}px) rotate(${Math.sin(lt*1.1)*.6}deg)`;
+  }
+
+  // S3 sheets
+  lt=sceneVis('s3',t);
+  if(lt!==null){
+    const a=eo(P(lt,.1,.6)), b=eo(P(lt,.7,1.2));
+    const sh=lt>1.5&&lt<2.4?Math.sin(lt*60)*4*(1-P(lt,1.5,2.4)):0;
+    $('sh1').style.transform=`translate(${lerp(500,40,a)+sh}px,${0}px) rotate(${lerp(10,-5,a)}deg)`;$('sh1').style.opacity=a;
+    $('sh2').style.transform=`translate(${lerp(-500,-30,b)-sh}px,0) rotate(${lerp(-10,4,b)}deg)`;$('sh2').style.opacity=b;
+    document.querySelectorAll('#s3 .bad').forEach((c,k)=>{const bl=lt>1.3?(0.6+0.4*Math.abs(Math.sin(lt*5+k))):1;c.style.opacity=bl;});
+  }
+
+  // S4 who paid
+  lt=sceneVis('s4',t);
+  if(lt!==null){
+    ROWS4.forEach((r,i)=>{const s=.15+i*.12;const x=eo(P(lt,s,s+.35));const e=$('r4'+i);e.style.opacity=x;e.style.transform=`translateX(${(1-x)*-60}px)`;
+      const q=$('q4'+i);const qs=1.0+i*.25;const qx=back(P(lt,qs,qs+.35));q.style.transform=`scale(${lt<qs?0:qx*(1+.08*Math.sin((lt-qs)*8))})`;});
+  }
+
+  // S5 month close
+  lt=sceneVis('s5',t);
+  if(lt!==null){
+    const k=eo(P(lt,.3,1.5));$('v5b').textContent=fmt(41200*k)+' EGP';
+    const g=P(lt,1.5,1.8);$('v5c').style.opacity=g;$('v5c').style.transform=`scale(${lerp(1.5,1,eo(g))})`;
+    const sh=lt>1.6&&lt<2.3?Math.sin(lt*70)*7*(1-P(lt,1.6,2.3)):0;
+    $('c5').style.transform=`translateX(${sh}px)`;
+    $('c5').style.boxShadow=`0 40px 90px rgba(0,0,0,.55),0 0 ${lerp(0,80,g)}px rgba(217,84,74,${.35*g})`;
+    ['q5a','q5b','q5c'].forEach((id,i)=>{const s=1.8+i*.25;const x=back(P(lt,s,s+.4));const e=$(id);e.style.opacity=P(lt,s,s+.2);e.style.transform=`translateY(${Math.sin(lt*2+i)*10}px) scale(${lt<s?0:x})`;});
+  }
+
+  // S6 reveal
+  lt=sceneVis('s6',t);
+  if(lt!==null){
+    const m=back(P(lt,.05,.6));$('mark6').style.transform=`translate(-50%,-50%) scale(${lt<.05?0:m}) rotate(${lerp(-25,0,eo(P(lt,.05,.7)))}deg)`;
+    const r=P(lt,.1,1.0);const rs=lerp(10,900,eo(r));$('ring6').style.width=$('ring6').style.height=rs+'px';$('ring6').style.opacity=(1-r)*.9;
+    const n=eo(P(lt,.45,.9));$('name6').style.opacity=n;$('name6').style.transform=`translateY(${(1-n)*40}px)`;
+    const up=eio(P(lt,1.3,1.9));$('s6').style.transform+=` translateY(${-up*260}px)`;
+  }
+  {const f=P(t,14.95,15.0)*(1-P(t,15.0,15.45));$('flash').style.opacity=t>=14.95&&t<15.45?f:0;}
+
+  // dashboard (S6->S7)
+  lt=sceneVis('sdash',t);
+  if(lt!==null){
+    const T=t;
+    const up=eo(P(T,16.5,17.3));
+    const zoom=eio(P(T,20.7,21.6));
+    // window position: centered, top 560
+    const w=$('dwin');
+    const baseX=50, baseY=560;
+    // zoom towards first row (approx y within window: 62+28+50+22+~120+22+58 => row0 center ~ 400)
+    const sc=lerp(1,1.35,zoom), ox=390, oy=405;
+    w.style.left=baseX+'px';w.style.top=baseY+'px';
+    w.style.transformOrigin=`${ox}px ${oy}px`;
+    w.style.transform=`translateY(${(1-up)*700}px) scale(${sc*lerp(.85,1,up)})`;
+    w.style.opacity=up;
+    // stats count
+    const k=eo(P(T,17.0,18.2));
+    $('dsv0').textContent=fmt(lerp(0,127,k)+(T>18.9?1:0));$('dsv1').textContent=fmt(lerp(0,46,k));$('dsv2').textContent=fmt(lerp(0,72,k));
+    // rows: row0 is the new order (arrives 18.8), others appear 17.1+
+    for(let i=1;i<6;i++){const s=17.1+i*.1;const x=eo(P(T,s,s+.35));const r=$('dtr'+i);r.style.opacity=x;r.style.transform=`translateX(${(1-x)*-40}px) translateY(${T<18.8?-84:lerp(-84,0,eo(P(T,18.8,19.2)))}px)`;}
+    const r0=$('dtr0');const n0=eo(P(T,18.9,19.3));r0.style.opacity=n0;r0.style.transform=`scale(${lerp(.9,1,back(n0))})`;
+    const glow=T>19.0?(.5+.5*Math.sin((T-19)*6)):0;
+    r0.style.background=`rgba(217,84,74,${(T<20.6?.12+.1*glow:.2)*n0})`;
+    r0.style.boxShadow=T>20.5?`inset 0 0 0 3px rgba(217,84,74,${P(T,20.5,20.7)})`:'none';
+    // cursor in screen coords
+    curPts=[[19.6,900,1500],[20.45,560,965]];
+    if(T>20.45&&T<21.1) rip=[20.5,575,975];
+  }
+
+  // S8 timeline
+  lt=sceneVis('s8',t);
+  if(lt!==null){
+    const st0=.55, gap=.75;
+    STEPS.forEach((s,i)=>{const a=st0+i*gap;const x=eo(P(lt,a,a+.3));
+      const ci=$('ci'+i);ci.style.background=x>0?`rgba(63,179,127,${x})`:'#1c1d22';ci.style.borderColor=x>0?'#3fb37f':'#3a3c44';
+      ci.style.transform=`scale(${lt<a?1:lerp(1,1,x)*(1+.18*Math.sin(P(lt,a,a+.4)*Math.PI))})`;
+      $('ck'+i).style.opacity=x;
+      const e=$('st'+i);e.style.opacity=lerp(.35,1,x);
+      const ap=eo(P(lt,.15+i*.08,.5+i*.08));e.style.transform=`translateX(${(1-ap)*-40}px)`;
+    });
+    $('tlfill').style.height=(450*eio(P(lt,st0,st0+3*gap)))+'px';
+  }
+
+  // S9 collect
+  lt=sceneVis('s9',t);
+  if(lt!==null){
+    $('ph9').style.transform=`translateY(${Math.sin(lt*1.4)*6}px)`;
+    const tap=1.7;
+    curPts=[[26.7,880,1650],[27.6,560,1350]];
+    if(lt>=tap&&lt<tap+.6) rip=[26+tap,560,1350];
+    const press=lt>tap&&lt<tap+.18?.94:1;
+    const sw=eo(P(lt,tap+.15,tap+.45));
+    $('btn9a').style.opacity=1-sw;$('btn9a').style.transform=`scale(${press})`;
+    $('btn9b').style.opacity=sw;$('btn9b').style.transform=`scale(${lerp(.9,1,back(sw))})`;
+    const ts=eo(P(lt,tap+.6,tap+1.0));$('toast9').style.opacity=ts;$('toast9').style.transform=`translateY(${(1-ts)*80}px)`;
+  }
+
+  // S10 accounting
+  lt=sceneVis('s10',t);
+  if(lt!==null){
+    const l=eo(P(lt,.2,.6));$('link10').style.opacity=l;$('link10').style.transform=`translateY(${(1-l)*-30}px)`;
+    ['e1','e2'].forEach((id,i)=>{const s=.6+i*.35;const x=eo(P(lt,s,s+.35));const e=$(id);e.style.opacity=x;e.style.transform=`translateX(${(1-x)*-50}px)`;e.style.background=`rgba(63,179,127,${.12*(1-P(lt,s+.4,s+1.4))*x})`;});
+    const b=eo(P(lt,.3,.7));$('c10b').style.opacity=b;$('c10b').style.transform=`translateY(${(1-b)*60}px)`;
+    const k=eio(P(lt,1.5,2.3));$('v10').textContent=fmt(lerp(48300,48750,k))+' EGP';
+    const diff=lerp(-450,0,k);
+    $('v10n').textContent=(Math.round(diff)===0?'0':'-'+fmt(-diff))+' EGP';
+    const g=P(lt,2.2,2.4);$('v10c').style.color=g>0?'#6fe0ad':'var(--red2)';
+    const ok=back(P(lt,2.35,2.75));$('ok10').style.opacity=P(lt,2.35,2.5);$('ok10').style.transform=`scale(${lt<2.35?0:ok})`;
+  }
+
+  // S11 all-in-one
+  lt=sceneVis('s11',t);
+  if(lt!==null){
+    const w=$('ewin');
+    const z=eio(P(lt,0,.9));
+    w.style.left='40px';w.style.top='560px';w.style.transformOrigin='0 0';
+    w.style.transform=`scale(${lerp(.82,.66,z)})`;
+    const p=eo(P(lt,.35,.85));$('ph11').style.opacity=p;$('ph11').style.transform=`translate(${(1-p)*120}px,${-20+Math.sin(lt*1.5)*6}px)`;
+    ['esv0','esv1','esv2'].forEach((id,i)=>$(id).textContent=[128,45,73][i]);
+    const fc=[...document.querySelectorAll('#flow11 .fchip')], ar=[...document.querySelectorAll('#flow11 .arr')];
+    fc.forEach((c,i)=>{const s=.6+i*.45;const x=eo(P(lt,s,s+.3));c.style.borderColor=x>0?`rgba(217,84,74,${x})`:'var(--line)';c.style.color=x>.5?'#fff':'#bfc1c7';c.style.background=`rgba(162,58,52,${.3*x})`;c.style.transform=`scale(${1+.12*Math.sin(P(lt,s,s+.4)*Math.PI)})`;});
+    ar.forEach((a,i)=>{const s=.85+i*.45;a.style.color=lt>s?'var(--red2)':'#555862';});
+    const f=eo(P(lt,.2,.6));$('flow11').style.opacity=f;
+  }
+
+  // S12 end
+  lt=sceneVis('s12',t);
+  if(lt!==null){
+    const m=back(P(lt,.15,.75));$('mark12').style.transform=`translate(-50%,-50%) scale(${lt<.15?0:m*(1+.015*Math.sin(lt*2))})`;
+    const r=P(lt,.2,1.3);const rs=lerp(10,1000,eo(r));$('ring12').style.width=$('ring12').style.height=rs+'px';$('ring12').style.opacity=(1-r)*.8;
+    [['word12',.55],['tag12',.95],['cta12',1.3]].forEach(([id,s])=>{const x=eo(P(lt,s,s+.45));$(id).style.opacity=x;$(id).style.transform=`translateY(${(1-x)*40}px)`;});
+  }
+
+  cursor(t,curPts);
+  if(rip) ripple(t,rip[0],rip[1],rip[2]); else $('ripple').style.opacity=0;
+};
+window.DURATION=42.0;
+render(0);
+</script>
+</body>
+</html>

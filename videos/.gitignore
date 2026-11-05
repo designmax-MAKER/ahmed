@@ -1,0 +1,5 @@
+node_modules/
+.venv/
+preview/
+silent.mp4
+music.wav
